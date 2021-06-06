@@ -1,6 +1,9 @@
 # Prerequisites
 *.d
 
+# .vs files
+OpenGL/.vs
+
 # Compiled Object files
 *.slo
 *.lo
