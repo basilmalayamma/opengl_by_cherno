@@ -124,6 +124,11 @@ int main(void)
          0.5,  0.5,     //3
     };
 
+
+    GLuint VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
     GLuint vertexBuffer;
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
@@ -149,7 +154,7 @@ int main(void)
         
     GLint uniform_location;
     uniform_location = glGetUniformLocation(program, "u_Colour");
-
+ 
     glfwSwapInterval(4);
 
     GLfloat r = 0.0f;
