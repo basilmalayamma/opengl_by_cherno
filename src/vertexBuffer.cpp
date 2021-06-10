@@ -1,29 +1,22 @@
-#include <GLDebug.h>
-#include <vertexBuffer.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <vertexBuffer.h>
 
-template<typename T>
-vertexBuffer<T>::vertexBuffer(unsigned int target, unsigned int size, T *data) {
+vertexBuffer::vertexBuffer(
+		unsigned int size, float *data) {
     glGenBuffers(1, &mID);
-    glBindBuffer(target, mID);
-    glBufferData(target, size * sizeof(T), data, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, mID);
+    glBufferData(GL_ARRAY_BUFFER, size * sizeof(float), data, GL_STATIC_DRAW);
 }
 
-template<typename T>
-bool vertexBuffer<T>::bindBuffer(GLenum target) {
-    GLCall(glBindBuffer(target, mID));
+void vertexBuffer::bind() {
+    glBindBuffer(GL_ARRAY_BUFFER, mID);
 }
 
-template<typename T>
-bool vertexBuffer<T>::unBindBuffer(GLenum target) {
-    GLCall(glBindBuffer(target, 0));
+void vertexBuffer::unBind() {
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-template<typename T>
-vertexBuffer<T>::~vertexBuffer() {
+vertexBuffer::~vertexBuffer() {
     glDeleteBuffers(1, &mID);
 }
-
-template class vertexBuffer<float>;
-template class vertexBuffer<unsigned int>;

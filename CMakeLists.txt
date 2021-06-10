@@ -10,6 +10,8 @@ add_executable(opengl_by_cherno
     src/main.cpp
     src/vertexBuffer.cpp
     src/GLDebug.cpp
+    src/vertexArray.cpp
+    src/indexBuffer.cpp
 )
 
 target_link_libraries(opengl_by_cherno

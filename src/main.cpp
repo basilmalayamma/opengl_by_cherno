@@ -6,6 +6,9 @@
 #include <string>
 #include <vertexBuffer.h>
 #include <GLDebug.h>
+#include <vertexArray.h>
+#include <indexBuffer.h>
+#include <unistd.h>
 
 class shaderSource {
 public:
@@ -44,13 +47,7 @@ shaderSource getShader(std::string file_path) {
         }
         ss[mode] << line << "\n";
     }
-#if 0
-    std::cout << "Vertex shader: " << std::endl;
-    std::cout << ss[0].str() << std::endl;
 
-    std::cout << "Fragment shader: " << std::endl;
-    std::cout << ss[1].str() << std::endl;
-#endif
     shaderSource shaderSrc(ss[Vertex].str(), ss[Fragment].str());
     return shaderSrc;
 
@@ -126,44 +123,63 @@ int main(void)
          0.5,  0.5,     //3
     };
 
+    vertexArray va;
+    vertexBuffer vb(8, &vertexData[0]);
+    vb.bind();
+    va.enablePointer();
 
-    GLuint VAO;
-    GLCall(glGenVertexArrays(1, &VAO));
-    GLCall(glBindVertexArray(VAO));
-
-    vertexBuffer<float> vb((unsigned int)GL_ARRAY_BUFFER, 8, &vertexData[0]);
-
-    GLCall(glEnableVertexAttribArray(0));
-    GLCall(glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), 0));
-
-    unsigned int indices[6] = {
+    unsigned int indices1[3] = {
         0, 1, 2,
+    };
+
+    unsigned int indices2[3] = {
         2, 3, 0
     };
 
-    vertexBuffer<unsigned int> ib(GL_ELEMENT_ARRAY_BUFFER, 6, indices);
+    indexBuffer ib1(3, indices1);
+    GLCall(ib1.unBind());
 
-    shaderSource shaderSrc = getShader("/home/basi/basi/git/opengl_by_cherno/res/shader/basic.shader");
+    indexBuffer ib2(3, indices2);
+    GLCall(ib2.unBind());
+
+    GLCall(va.unBind());
+    GLCall(vb.unBind());
+
+    shaderSource shaderSrc = getShader(
+	"/home/basi/basi/git/opengl_by_cherno/res/shader/basic.shader");
     unsigned int program = createProgram(shaderSrc.vs, shaderSrc.fs);
     GLCall(glUseProgram(program));
         
     GLint uniform_location;
     GLCall(uniform_location = glGetUniformLocation(program, "u_Colour"));
  
-    GLCall(glfwSwapInterval(4));
+    GLCall(glfwSwapInterval(40));
 
     GLfloat r = 0.0f;
 
-    while (!glfwWindowShouldClose(window))
-    {
-        GLCall(glClear(GL_COLOR_BUFFER_BIT));
+    while (!glfwWindowShouldClose(window)) {
+	GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f ));
+        GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
         
-        r += 0.1f;
         if (r >= 1.0f) {
             r = 0.0f;
         }
+        r += 0.2f;
         GLCall(glUniform4f(uniform_location, r, 0.0f, 1.0f - r, 1.0f));
+
+	GLCall(ib1.bind());
+	GLCall(va.bind());
         GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+	GLCall(ib1.unBind());
+
+        GLCall(glfwSwapBuffers(window));
+        GLCall(glfwPollEvents());
+
+        r += 0.2f;
+        GLCall(glUniform4f(uniform_location, r, 0.0f, 1.0f - r, 1.0f));
+	GLCall(ib2.bind());
+        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+	GLCall(ib2.unBind());
 
         GLCall(glfwSwapBuffers(window));
         GLCall(glfwPollEvents());
