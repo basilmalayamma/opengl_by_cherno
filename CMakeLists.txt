@@ -7,11 +7,12 @@ include_directories(
 )
 
 add_executable(opengl_by_cherno
-    src/main.cpp
+    test/app.cpp
     src/vertexBuffer.cpp
     src/GLDebug.cpp
     src/vertexArray.cpp
     src/indexBuffer.cpp
+    src/shader.cpp
 )
 
 target_link_libraries(opengl_by_cherno
