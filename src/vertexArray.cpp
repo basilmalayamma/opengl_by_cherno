@@ -1,7 +1,8 @@
 #include <vertexArray.h>
 #include <vertexBuffer.h>
 
-vertexArray::vertexArray() {
+vertexArray::vertexArray(int vertexSize):
+	mVertexSize(vertexSize) {
     glGenVertexArrays(1, &mVAO);
     glBindVertexArray(mVAO);
 }
@@ -9,8 +10,8 @@ vertexArray::vertexArray() {
 void vertexArray::enablePointer() {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(
-	0, 2, GL_FLOAT, GL_FALSE,
-	2 * sizeof(GL_FLOAT), (const GLvoid*)0);
+	0, mVertexSize, GL_FLOAT, GL_FALSE,
+	mVertexSize * sizeof(GL_FLOAT), (const GLvoid*)0);
 }
 
 vertexArray::~vertexArray() {
@@ -24,4 +25,8 @@ void vertexArray::bind(void) {
 
 void vertexArray::unBind(void) {
     glBindVertexArray(0);
+}
+
+int vertexArray::size() {
+    return mVertexSize;
 }

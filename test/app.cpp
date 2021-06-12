@@ -7,6 +7,7 @@
 #include <vertexArray.h>
 #include <indexBuffer.h>
 #include <shader.h>
+#include <renderer.h>
 
 int main(void)
 {
@@ -44,7 +45,7 @@ int main(void)
          0.5,  0.5,     //3
     };
 
-    vertexArray va;
+    vertexArray va(2);
     vertexBuffer vb(8, &vertexData[0]);
     vb.bind();
     va.enablePointer();
@@ -75,30 +76,26 @@ int main(void)
     GLCall(glfwSwapInterval(40));
 
     GLfloat r = 0.0f;
+    Renderer renderer;
 
     while (!glfwWindowShouldClose(window)) {
-	GLCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f ));
-        GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-        
+        renderer.clear();
+
         if (r >= 1.0f) {
             r = 0.0f;
         }
         r += 0.2f;
         GLCall(glUniform4f(uniform_location, r, 0.0f, 1.0f - r, 1.0f));
 
-	GLCall(ib1.bind());
-	GLCall(va.bind());
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
-	GLCall(ib1.unBind());
+	renderer.render(va, ib1);
 
         GLCall(glfwSwapBuffers(window));
         GLCall(glfwPollEvents());
 
         r += 0.2f;
         GLCall(glUniform4f(uniform_location, r, 0.0f, 1.0f - r, 1.0f));
-	GLCall(ib2.bind());
-        GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
-	GLCall(ib2.unBind());
+
+	renderer.render(va, ib2);
 
         GLCall(glfwSwapBuffers(window));
         GLCall(glfwPollEvents());

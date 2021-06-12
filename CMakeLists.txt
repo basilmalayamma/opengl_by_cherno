@@ -13,6 +13,7 @@ add_executable(opengl_by_cherno
     src/vertexArray.cpp
     src/indexBuffer.cpp
     src/shader.cpp
+    src/renderer.cpp
 )
 
 target_link_libraries(opengl_by_cherno

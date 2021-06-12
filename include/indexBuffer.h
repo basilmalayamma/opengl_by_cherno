@@ -7,8 +7,10 @@ public:
     void bind();
     void unBind();
     ~indexBuffer();
+    int count();
 private:
     unsigned int mID;
+    int mIndexCount;
 };
 
 #endif

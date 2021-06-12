@@ -6,15 +6,16 @@
 
 class vertexArray {
 public:
-   //vertexArray(unsigned int count);
-   vertexArray();
+   vertexArray(int vertexSize);
    ~vertexArray();
    void bind();
    void unBind(void);
    void enablePointer();
+   int size();
 
 private:
    unsigned int mVAO;
+   int mVertexSize;
 };
 
 #endif
