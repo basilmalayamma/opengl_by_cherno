@@ -73,8 +73,6 @@ int main(void)
     GLint uniform_location;
     GLCall(uniform_location = glGetUniformLocation(shader1.getID(), "u_Colour"));
  
-    GLCall(glfwSwapInterval(40));
-
     GLfloat r = 0.0f;
     Renderer renderer;
 
@@ -88,13 +86,6 @@ int main(void)
         GLCall(glUniform4f(uniform_location, r, 0.0f, 1.0f - r, 1.0f));
 
 	renderer.render(va, ib1);
-
-        GLCall(glfwSwapBuffers(window));
-        GLCall(glfwPollEvents());
-
-        r += 0.2f;
-        GLCall(glUniform4f(uniform_location, r, 0.0f, 1.0f - r, 1.0f));
-
 	renderer.render(va, ib2);
 
         GLCall(glfwSwapBuffers(window));
