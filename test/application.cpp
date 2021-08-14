@@ -71,6 +71,7 @@ int Application::initializeTexture(std::string path) {
 }
 
 int Application::render() {
+    glViewport(0, 0, WIDTH, HEIGHT);
     while (!glfwWindowShouldClose(mWindow)) {
         mRenderer->clear();
 
