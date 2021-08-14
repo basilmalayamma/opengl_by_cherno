@@ -3,6 +3,10 @@
 #include <indexBuffer.h>
 
 indexBuffer::indexBuffer(
+		unsigned int size) {
+}
+
+indexBuffer::indexBuffer(
 		unsigned int size, unsigned int *data):
 	mIndexCount(size) {
     glGenBuffers(1, &mID);

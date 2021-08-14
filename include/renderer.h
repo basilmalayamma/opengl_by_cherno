@@ -3,12 +3,15 @@
 
 #include <vertexArray.h>
 #include <indexBuffer.h>
+#include <memory>
 
 class Renderer {
 public:
     Renderer();
     ~Renderer();
-    void render(vertexArray &va, indexBuffer &ib);
+    void render(
+	std::shared_ptr<vertexArray> va,
+	std::shared_ptr<indexBuffer> ib);
     void clear();
 private:
 

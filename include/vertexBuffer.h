@@ -3,6 +3,7 @@
 
 class vertexBuffer {
 public:
+    vertexBuffer(unsigned int size);
     vertexBuffer(unsigned int size, float *data);
     void bind();
     void unBind();

@@ -4,16 +4,18 @@ project(opengl_by_cherno)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/test
 )
 
 add_executable(opengl_by_cherno
-    test/app.cpp
+    test/application.cpp
     src/vertexBuffer.cpp
     src/GLDebug.cpp
     src/vertexArray.cpp
     src/indexBuffer.cpp
     src/shader.cpp
     src/renderer.cpp
+    src/texture.cpp
 )
 
 target_link_libraries(opengl_by_cherno

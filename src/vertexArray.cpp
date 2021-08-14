@@ -7,15 +7,17 @@ vertexArray::vertexArray(int vertexSize):
     glBindVertexArray(mVAO);
 }
 
-void vertexArray::enablePointer() {
-    glEnableVertexAttribArray(0);
+void vertexArray::enablePointer(GLint prgm, std::string name, int offset) {
+    GLint location = glGetAttribLocation(prgm, name.c_str());
+    std::cout << "Loacation for " << name << " is " << location << std::endl;
     glVertexAttribPointer(
-	0, mVertexSize, GL_FLOAT, GL_FALSE,
-	mVertexSize * sizeof(GL_FLOAT), (const GLvoid*)0);
+	location, mVertexSize, GL_FLOAT, GL_FALSE,
+	mVertexSize * 2 * sizeof(GL_FLOAT), (GLvoid*)(offset * sizeof(float)));
+    glEnableVertexAttribArray((GLuint)location);
 }
 
 vertexArray::~vertexArray() {
-    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
     glDeleteVertexArrays(1, &mVAO);
 }
 

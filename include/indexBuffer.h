@@ -3,6 +3,7 @@
 
 class indexBuffer {
 public:
+    indexBuffer(unsigned int size);
     indexBuffer(unsigned int size, unsigned int *data);
     void bind();
     void unBind();

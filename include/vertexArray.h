@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 #include <vertexBuffer.h>
+#include <iostream>
 
 class vertexArray {
 public:
@@ -10,7 +11,7 @@ public:
    ~vertexArray();
    void bind();
    void unBind(void);
-   void enablePointer();
+   void enablePointer(GLint prgm, std::string name, int offset);
    int size();
 
 private:

@@ -12,9 +12,10 @@ void Renderer::clear() {
     glClearColor(0, 0, 0, 0);
 }
 
-void Renderer::render(vertexArray &va, indexBuffer &ib) {
-    ib.bind();
-    va.bind();
-    //glDrawElements(GL_TRIANGLES, va.size() * ib.count(), GL_UNSIGNED_INT, nullptr);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+void Renderer::render(
+	std::shared_ptr<vertexArray> va,
+	std::shared_ptr<indexBuffer> ib) {
+    ib->bind();
+    va->bind();
+    glDrawElements(GL_TRIANGLES, va->size() * ib->count(), GL_UNSIGNED_INT, nullptr);
 }
