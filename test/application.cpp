@@ -97,16 +97,31 @@ Application::~Application() {
     glfwTerminate();
 }
 
+int Application::setShaderValue(std::string name, int value) {
+    GLuint texID = glGetUniformLocation(getShaderID(), name.c_str());
+    glUniform1i(texID, value);
+    return 0;
+}
+
+int Application::setShaderValue(std::string name, const glm::mat4 &proj) {
+    GLuint texID = glGetUniformLocation(getShaderID(), name.c_str());
+    glUniformMatrix4fv(texID, 1, GL_FALSE, &proj[0][0]);
+    return 0;
+}
+
 int main(void) {
     Application app;
     app.init();
+
     app.initializeShader(SHADER_PATH);
     app.initializeBuffers();
     app.initializeTexture(TEXTURE_PATH);
     app.setupBlend();
 
-    GLuint texID = glGetUniformLocation(app.getShaderID(), "text");
-    glUniform1i(texID, 0);
+    app.setShaderValue("text", 0);
+
+    glm::mat4 proj = glm::ortho(-2.0, 2.0, -1.5, 1.5, -1.0, 1.0);
+    app.setShaderValue("u_MPV", proj);
 
     app.render();
     return 0;

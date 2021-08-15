@@ -13,6 +13,8 @@
 #include <renderer.h>
 #include <texture.h>
 #include <memory>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #define WIDTH 640
 #define HEIGHT 480
@@ -44,6 +46,8 @@ public:
     unsigned int getShaderID();
     int render();
     int setupBlend();
+    int setShaderValue(std::string name, int value);
+    int setShaderValue(std::string name, const glm::mat4 &proj);
     ~Application();
 
 private:

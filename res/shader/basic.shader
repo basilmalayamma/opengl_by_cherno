@@ -2,11 +2,11 @@
 #version 330
 layout(location = 2) in vec4 position;
 layout(location = 3) in vec4 coordinates;
-vec2 pos;
+uniform mat4 u_MPV;
 out vec4 coords;
 void main()
 {
-    gl_Position = position;
+    gl_Position = position * u_MPV;
     coords = coordinates;
 }
 
