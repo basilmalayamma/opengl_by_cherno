@@ -85,6 +85,13 @@ int Application::render() {
     return 0;
 }
 
+int Application::setupBlend() {
+    GLCall(glEnable(GL_BLEND));
+    GLCall(glBlendFunc(GL_ONE, GL_ZERO));
+    GLCall(glBlendEquation(GL_FUNC_ADD));
+    return 0;
+}
+
 Application::~Application() {
     mShader->detach();
     glfwTerminate();
@@ -96,6 +103,7 @@ int main(void) {
     app.initializeShader(SHADER_PATH);
     app.initializeBuffers();
     app.initializeTexture(TEXTURE_PATH);
+    app.setupBlend();
 
     GLuint texID = glGetUniformLocation(app.getShaderID(), "text");
     glUniform1i(texID, 0);

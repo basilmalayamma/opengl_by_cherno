@@ -43,6 +43,7 @@ public:
     int initializeTexture(std::string path);
     unsigned int getShaderID();
     int render();
+    int setupBlend();
     ~Application();
 
 private:
