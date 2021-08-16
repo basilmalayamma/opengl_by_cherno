@@ -121,7 +121,10 @@ int main(void) {
     app.setShaderValue("text", 0);
 
     glm::mat4 proj = glm::ortho(-2.0, 2.0, -1.5, 1.5, -1.0, 1.0);
-    app.setShaderValue("u_MPV", proj);
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, 0.0f, 0.0f));
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(1.0, 0.0, 0.0));
+    glm::mat4 MVP = proj * view * model;
+    app.setShaderValue("u_MPV", MVP);
 
     app.render();
     return 0;

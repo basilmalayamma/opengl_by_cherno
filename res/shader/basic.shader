@@ -6,7 +6,7 @@ uniform mat4 u_MPV;
 out vec4 coords;
 void main()
 {
-    gl_Position = position * u_MPV;
+    gl_Position = u_MPV * position;
     coords = coordinates;
 }
 
