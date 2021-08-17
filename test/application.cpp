@@ -1,4 +1,6 @@
 #include <application.h>	
+#include <imgui.h>
+#include <imgui_impl_glfw_gl3.h>
 
 Application::Application():
 	mShader(NULL),
@@ -36,6 +38,7 @@ int Application::init() {
         std::cout << "Error in glewInit()" << std::endl;
 	return -1;
     }
+
     return 0;
 }
 
@@ -72,12 +75,52 @@ int Application::initializeTexture(std::string path) {
 
 int Application::render() {
     glViewport(0, 0, WIDTH, HEIGHT);
+
+    glm::mat4 proj = glm::ortho(-2.0, 2.0, -1.5, 1.5, -1.0, 1.0);
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, 0.0f, 0.0f));
+
+    ImGui::CreateContext();
+    ImGui_ImplGlfwGL3_Init(mWindow, true);
+
+    bool show_demo_window = true;
+    bool show_another_window = false;
+    ImVec4 background_colour = ImVec4(0.0f, 0.0f, 0.0f, 1.00f);
+
     while (!glfwWindowShouldClose(mWindow)) {
-        mRenderer->clear();
+        mRenderer->clear(
+		background_colour.x,
+		background_colour.y,
+		background_colour.z);
+
+	ImGui_ImplGlfwGL3_NewFrame();
+
+	{
+            static float f = 0.0f;
+            static int counter = 0;
+            ImGui::Text("SpiloGasteR");
+            ImGui::SliderFloat("Movement", &f, 0.0f, 1.0f);
+            ImGui::ColorEdit3("Backgroung Colour", (float*)&background_colour);
+
+	    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(f, 0.0, 0.0));
+	    glm::mat4 MVP = proj * view * model;
+	    setShaderValue("u_MPV", MVP);
+
+	    ImGui::Checkbox("Check box", &show_demo_window);
+
+            if (ImGui::Button("Button"))
+                counter++;
+            ImGui::SameLine();
+            ImGui::Text("Counter = %d", counter);
+
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        }
 
 	mTexture->Bind();
 	mRenderer->render(mVA, mIB1);
 	mRenderer->render(mVA, mIB2);
+
+	ImGui::Render();
+        ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
         GLCall(glfwSwapBuffers(mWindow));
         GLCall(glfwPollEvents());
@@ -94,6 +137,8 @@ int Application::setupBlend() {
 
 Application::~Application() {
     mShader->detach();
+    ImGui_ImplGlfwGL3_Shutdown();
+    ImGui::DestroyContext();
     glfwTerminate();
 }
 
@@ -119,12 +164,6 @@ int main(void) {
     app.setupBlend();
 
     app.setShaderValue("text", 0);
-
-    glm::mat4 proj = glm::ortho(-2.0, 2.0, -1.5, 1.5, -1.0, 1.0);
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(-0.5f, 0.0f, 0.0f));
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(1.0, 0.0, 0.0));
-    glm::mat4 MVP = proj * view * model;
-    app.setShaderValue("u_MPV", MVP);
 
     app.render();
     return 0;

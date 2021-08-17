@@ -8,8 +8,9 @@ Renderer::~Renderer() {
 
 }
 
-void Renderer::clear() {
-    glClearColor(0, 0, 0, 0);
+void Renderer::clear(float r, float g, float b) {
+    glClearColor(r, g, b, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Renderer::render(

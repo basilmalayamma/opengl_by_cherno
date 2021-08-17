@@ -12,7 +12,7 @@ public:
     void render(
 	std::shared_ptr<vertexArray> va,
 	std::shared_ptr<indexBuffer> ib);
-    void clear();
+    void clear(float r, float g, float b);
 private:
 
 };

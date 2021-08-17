@@ -5,6 +5,7 @@ project(opengl_by_cherno)
 include_directories(
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/test
+    ${CMAKE_SOURCE_DIR}/res/imgui
 )
 
 add_executable(opengl_by_cherno
@@ -16,6 +17,10 @@ add_executable(opengl_by_cherno
     src/shader.cpp
     src/renderer.cpp
     src/texture.cpp
+    res/imgui/imgui.cpp
+    res/imgui/imgui_demo.cpp
+    res/imgui/imgui_draw.cpp
+    res/imgui/imgui_impl_glfw_gl3.cpp
 )
 
 target_link_libraries(opengl_by_cherno
