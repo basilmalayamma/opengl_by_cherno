@@ -7,7 +7,6 @@ Application::Application():
 	mVA(NULL),
 	mVB(NULL),
 	mIB1(NULL),
-	mIB2(NULL),
 	mTexture(NULL),
 	mRenderer(new (Renderer)) {
 }
@@ -50,17 +49,16 @@ void Application::initializeShader(std::string path) {
 int Application::initializeBuffers() {
     mVA = std::shared_ptr<vertexArray>(new vertexArray(2));
     int vertexDataCount = sizeof(vertexData)/sizeof(vertexData[0]);
+    std::cout << "Size of vertexData = " << vertexDataCount << std::endl;
     mVB = std::shared_ptr<vertexBuffer>(new vertexBuffer(vertexDataCount, &vertexData[0]));
     mVB->bind();
     mVA->enablePointer(mShader->getID(), "position", 0);
     mVA->enablePointer(mShader->getID(), "coordinates", 2);
-
-
-    mIB1 = std::shared_ptr<indexBuffer>(new indexBuffer(3, indices1));
+    mVA->enablePointer(mShader->getID(), "id", 4);
+    int indicesCount = sizeof(indices1)/sizeof(indices1[0]);
+    std::cout << "Size of indices = " << indicesCount << std::endl;
+    mIB1 = std::shared_ptr<indexBuffer>(new indexBuffer(indicesCount, indices1));
     GLCall(mIB1->unBind());
-
-    mIB2 = std::shared_ptr<indexBuffer>(new indexBuffer(3, indices2));
-    GLCall(mIB2->unBind());
     return 0;
 }
 
@@ -68,8 +66,16 @@ unsigned int Application::getShaderID() {
     return mShader->getID();
 }
 
-int Application::initializeTexture(std::string path) {
+int Application::initializeTexture(std::string path, std::string path2) {
     mTexture = std::shared_ptr<Texture>(new Texture(path));
+    mTexture2 = std::shared_ptr<Texture>(new Texture(path2));
+    
+    auto loc = glGetUniformLocation(mShader->getID(), "text");
+    int sampler[] = {0, 1};
+    glUniform1iv(loc, 2, sampler);
+
+    mTexture->Bind(0);
+    mTexture2->Bind(1);
     return 0;
 }
 
@@ -115,9 +121,8 @@ int Application::render() {
             ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         }
 
-	mTexture->Bind();
+	//mTexture2->Bind();
 	mRenderer->render(mVA, mIB1);
-	mRenderer->render(mVA, mIB2);
 
 	ImGui::Render();
         ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
@@ -160,7 +165,7 @@ int main(void) {
 
     app.initializeShader(SHADER_PATH);
     app.initializeBuffers();
-    app.initializeTexture(TEXTURE_PATH);
+    app.initializeTexture(TEXTURE_PATH, TEXTURE_PATH2);
     app.setupBlend();
 
     app.setShaderValue("text", 0);

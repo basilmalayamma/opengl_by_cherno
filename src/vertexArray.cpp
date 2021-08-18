@@ -12,7 +12,7 @@ void vertexArray::enablePointer(GLint prgm, std::string name, int offset) {
     std::cout << "Loacation for " << name << " is " << location << std::endl;
     glVertexAttribPointer(
 	location, mVertexSize, GL_FLOAT, GL_FALSE,
-	mVertexSize * 2 * sizeof(GL_FLOAT), (GLvoid*)(offset * sizeof(float)));
+	mVertexSize * 3 * sizeof(GL_FLOAT), (GLvoid*)(offset * sizeof(float)));
     glEnableVertexAttribArray((GLuint)location);
 }
 

@@ -9,6 +9,7 @@ public:
     ~Texture();
 
     void Bind();
+    void Bind(int slot);
     void unBind();
 
 private:
